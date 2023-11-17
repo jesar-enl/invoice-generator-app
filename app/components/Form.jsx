@@ -4,6 +4,8 @@ import { useState } from 'react';
 import FormTable from './FormTable';
 
 export default function Form() {
+  const [preview, setPreview] = useState(false);
+  
   const [logoUrl, setLogoUrl] = useState('');
 
   const [tableData, setTableData] = useState([]);
@@ -21,6 +23,8 @@ export default function Form() {
     dueDate: '',
   });
 
+  const [combinedData, setCombinedData] = useState({});
+
   const updatedTableData = (newData) => {
     setTableData(newData);
   };
@@ -33,8 +37,20 @@ export default function Form() {
     });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const allFormData = {
+      ...formData,
+      tableData,
+      logoUrl
+    };
+    setCombinedData(allFormData)
+    setPreview(!preview);
+  }
+
   return (
-    <form className="w-full mx-auto mb-6 max-w-4xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8">
+    <form onSubmit={handleSubmit} className="w-full mx-auto mb-6 max-w-4xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8">
       <div className="flex justify-between items-center">
         <div className="flex items-center justify-between">
           {logoUrl ? (
