@@ -46,8 +46,8 @@ export default function FormPreview({ data }) {
         <p className="text-base">{companyCountry}</p>
       </div>
       <div className="flex justify-between gap-2">
-        <span className="text-base">Billed to:</span>
         <div className="flex flex-col gap-2 w-1/2 mt-4">
+          <span className="text-base text-slate-400">Billed to:</span>
           <p className="text-base">{clientName}</p>
           <p className="text-base">{clientAddress}</p>
         </div>
@@ -73,6 +73,18 @@ export default function FormPreview({ data }) {
         </div>
       </div>
       <PreviewTable tableData={tableData} />
+      <div className="mt-12 flex flex-col">
+        <div className="flex justify-end">
+          <span className="text-slate-400">...................................</span>
+        </div>        
+        <div className="flex justify-end">          
+          <span className="text-slate-400 text-xs">authorized signatory</span>
+        </div>        
+        <div className="flex justify-end mt-10">
+          <span className="text-slate-400">e-Invoice Powered by: </span>
+          <span className="text-rose-400 font-bold"> J-SofTech</span>
+        </div>
+      </div>
     </div>
   );
 }

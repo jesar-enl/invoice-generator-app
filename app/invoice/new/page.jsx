@@ -1,11 +1,12 @@
 'use client';
 import { CldImage, CldUploadButton } from 'next-cloudinary';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AiOutlineCloudDownload, AiOutlineCloudUpload } from 'react-icons/ai';
 import { CiEdit, CiMail } from 'react-icons/ci';
 import { MdPreview } from 'react-icons/md';
 import FormPreview from '../../components/FormPreview';
 import FormTable from '../../components/FormTable';
+import { useReactToPrint } from 'react-to-print';
 
 export default function InvoiceCreation() {
   const [preview, setPreview] = useState(false);
@@ -28,6 +29,7 @@ export default function InvoiceCreation() {
     billDate: '',
     dueDate: '',
   });
+  const invoiceRef = useRef();
 
   // invoice number
   const [number, setNumber] = useState('');
@@ -35,7 +37,7 @@ export default function InvoiceCreation() {
   const generateNumber = () => {
     let invoiceNumber = formData.invoiceNumber;
     do {
-      invNumber = Math.floor(10000 + Math.random() * 90000);
+      invoiceNumber = Math.floor(10000 + Math.random() * 90000);
     } while (localStorage.getItem(`INV-${invoiceNumber}`));
 
     localStorage.setItem(`INV-${invoiceNumber}`, true);
@@ -43,7 +45,9 @@ export default function InvoiceCreation() {
   };
 
   useEffect(() => {
-    setNumber(`INV-${generateNumber()}`);
+    const invoiceNumber = `INV-${generateNumber()}`;
+    setNumber(invoiceNumber);
+    setFormData((prevState) => ({ ...prevState, invoiceNumber }));
   }, []);
 
   const updatedTableData = (newData) => {
@@ -69,6 +73,10 @@ export default function InvoiceCreation() {
     setCombinedData(allFormData);
     setPreview(!preview);
   };
+
+  const handlePrint = useReactToPrint({
+    content: () => invoiceRef.current,
+  })
 
   return (
     <div className="bg-slate-50 md:py-10 py-8 px-4 md:px-16 mt-10">
@@ -96,6 +104,7 @@ export default function InvoiceCreation() {
           )}
           <button
             type="button"
+            onClick={handlePrint}
             className="flex items-center space-x-1 px-2 py-3 shadow rounded-lg border border-gray-300 gap-2"
           >
             <AiOutlineCloudDownload />
@@ -123,7 +132,9 @@ export default function InvoiceCreation() {
 
       {/** Preview form and Edit form */}
       {preview ? (
-        <FormPreview data={combinedData} />
+        <div ref={invoiceRef}>
+          <FormPreview data={combinedData} />
+        </div>
       ) : (
         <form
           onSubmit={handleSubmit}
