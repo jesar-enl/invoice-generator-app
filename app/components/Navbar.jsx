@@ -10,7 +10,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed bg-violet-700 top-0 right-0 w-full left-0 h-16 flex items-center justify-between px-16 text-slate-50">
+      <header className="fixed bg-violet-700 top-0 right-0 w-full left-0 h-16 flex items-center justify-between px-16 text-slate-50 z-50">
         <Link href="/" className="text-slate-50 font-bold text-2xl md:text-4xl">
           Invoicer
         </Link>

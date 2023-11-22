@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { AiOutlineCloseCircle, AiOutlinePlus } from 'react-icons/ai';
 
@@ -72,10 +74,7 @@ export default function FormTable({ updatedTableData }) {
         <tbody>
           {tableData.map((row, index) => {
             return (
-              <tr
-                key={index}
-                className="bg-white border-b hover:bg-gray-200"
-              >
+              <tr key={index} className="bg-white border-b hover:bg-gray-200">
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
