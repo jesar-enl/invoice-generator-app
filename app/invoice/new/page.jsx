@@ -7,6 +7,7 @@ import { MdPreview } from 'react-icons/md';
 import { useReactToPrint } from 'react-to-print';
 import FormPreview from '../../components/FormPreview';
 import FormTable from '../../components/FormTable';
+import toast from 'react-hot-toast';
 
 export default function InvoiceCreation() {
   const [loading, setLoading] = useState(false);
@@ -76,7 +77,7 @@ export default function InvoiceCreation() {
 
     try {
       setLoading(true);
-      const response = await fetch('http:localhost:3000/api/invoice', {
+      const response = await fetch('http://localhost:3000/api/invoice', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,13 +90,12 @@ export default function InvoiceCreation() {
           tableData,
         }),
       });
-
-      const createdInvoice = await response.json();
-      console.log(createdInvoice);
+      console.log(response)
       setLoading(false);
       toast.success('Invoice created');
       setPreview(!preview);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };

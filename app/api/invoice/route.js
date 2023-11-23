@@ -16,8 +16,8 @@ export async function POST(request) {
         clientName: invoiceData.clientName,
         clientAddress: invoiceData.clientAddress,
         invoiceNumber: invoiceData.invoiceNumber,
-        billDate: invoiceData.billDate,
-        dueDate: invoiceData.dueDate,
+        billDate: `${invoiceData.billDate}T00:00:00Z`,
+        dueDate: `${invoiceData.dueDate}T00:00:00Z`,
         logoUrl: invoiceData.logoUrl,
       },
     });
@@ -41,8 +41,30 @@ export async function POST(request) {
     // use Promise.all() to await all creation promises.
     const rows = await Promise.all(table);
 
-    return NextResponse.json({ data: { invoice, rows } }, { status: 201 });
+    const data = { invoice, rows };
+
+    return NextResponse.json(data, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error }, { stauts: 500 });
+  }
+}
+
+export async function GET(request) {
+  try {
+    const invoices = await db.invoice.findMany({
+      include: {
+        tableData: true,
+      },
+    });
+
+    return NextResponse.json(invoices);
+  } catch (error) {
+    return NextResponse.json(
+      {
+        message: 'Failed to load invoices',
+        error,
+      },
+      { status: 500 }
+    );
   }
 }
